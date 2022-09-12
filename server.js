@@ -9,6 +9,9 @@ require('dotenv').config();
 
 app.use(express.json());
 
+
+app.use('/api/v1/login',routeLogin)
+
 app.get('/api/v1', (req, res) => {
     res.status(200).json('Bienvenido al inicio');
 })
