@@ -1,3 +1,4 @@
+const { table } = require("console");
 const fs = require("fs");
 const path = require("path");
 
@@ -84,11 +85,12 @@ const usersController = {
           password: req.body.password,
           firstname: req.body.firstname,
           lastname: req.body.lastname,
-          profilepic: (req.body.profilepic === undefined) ? null : req.body.profilepic,
+          profilepic:
+            req.body.profilepic === undefined ? null : req.body.profilepic,
           role: req.body.role,
-          cart: []
+          cart: [],
         };
-        
+
         users.push(newUser);
         console.log("func");
         writeUserDB("users.json", users);
@@ -105,44 +107,92 @@ const usersController = {
         });
       }
     } catch (error) {
-        console.log(error);
-        res.status(500).json({
-          ok: false,
-          msg: "Error al leer la base de datos",
-        });
+      console.log(error);
+      res.status(500).json({
+        ok: false,
+        msg: "Error al leer la base de datos",
+      });
     }
   },
   editUser: (req, res) => {
     try {
-        const userToEdit = findByIdDB('users.json', req.params.userId);
-    if(userToEdit){
-        userToEdit.email = (req.body.email === undefined) ? this.email : req.body.email;
-        userToEdit.username = (req.body.username === undefined) ? this.username : req.body.username;
-        userToEdit.password = (req.body.password === undefined) ? this.password : req.body.password;
-        userToEdit.firstname = (req.body.firstname === undefined) ? this.firstname : req.body.firstname;
-        userToEdit.lastname = (req.body.lastname === undefined) ? this.lastname : req.body.lastname;
-        userToEdit.profilepic = (req.body.profilepic === undefined) ? this.profilepic : req.body.profilepic;
-        userToEdit.role = (req.body.role === undefined) ? this.role : req.body.role;   
+      const userToEdit = findByIdDB("users.json", req.params.userId);
+
+      if (userToEdit) {
+        userToEdit.email =
+          req.body.email === undefined ? this.email : req.body.email;
+        userToEdit.username =
+          req.body.username === undefined ? this.username : req.body.username;
+        userToEdit.password =
+          req.body.password === undefined ? this.password : req.body.password;
+        userToEdit.firstname =
+          req.body.firstname === undefined
+            ? this.firstname
+            : req.body.firstname;
+        userToEdit.lastname =
+          req.body.lastname === undefined ? this.lastname : req.body.lastname;
+        userToEdit.profilepic =
+          req.body.profilepic === undefined
+            ? this.profilepic
+            : req.body.profilepic;
+        userToEdit.role =
+          req.body.role === undefined ? this.role : req.body.role;
+
+        const users = readUserDB("users.json");
+        const newUserData = users.filter(
+          (ele) => ele.id !== Number(req.params.userId)
+        );
+        newUserData.push(userToEdit);
+        writeUserDB("users.json", newUserData);
+
         res.status(200).json({
-            ok: true, 
-            msg: `Usuario ${userToEdit.username} editado con exito`,
-            user: userToEdit
-        })     
-    }else{
-        res.status(404).json({
-            ok: false, 
-            msg: `Usuario ${req.params.userId} no existe`
-        })  
-    }
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({
-          ok: false,
-          msg: "Error al leer la base de datos",
+          ok: true,
+          msg: `Usuario ${userToEdit.username} editado con exito`,
+          user: userToEdit,
         });
+      } else {
+        res.status(404).json({
+          ok: false,
+          msg: `Usuario ${req.params.userId} no existe`,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({
+        ok: false,
+        msg: "Error al leer la base de datos",
+      });
     }
-    
-  }
+  },
+  //HACER UPDATE CON BORRAR CARRITO ANTES DE BORRAR USER
+  deleteUser: (req, res) => {
+    try {
+      const userToDelete = findByIdDB("users.json", req.params.userId);
+      if (userToDelete) {
+        const users = readUserDB("users.json");
+        const newUserData = users.filter(
+          (ele) => ele.id !== Number(req.params.userId)
+        );
+        writeUserDB("users.json", newUserData);
+        res.status(200).json({
+          ok: true,
+          msg: `Se ha borrado el usuario.`,
+          userDeleted: userToDelete,
+        });
+      } else {
+        res.status(404).json({
+          ok: false,
+          msg: `El usuario con id ${req.params.userId} no existe.`,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({
+        ok: false,
+        msg: "Error al leer la base de datos",
+      });
+    }
+  },
 };
 
 module.exports = usersController;
