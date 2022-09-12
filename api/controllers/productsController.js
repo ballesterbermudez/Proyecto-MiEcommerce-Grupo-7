@@ -62,7 +62,6 @@ const controller = {
                     product.gallery.map(el=> picture.getPicture(el));
                 }
 
-
                 let newProduct = {id, ...product}
 
                 data.push(newProduct);
@@ -79,6 +78,7 @@ const controller = {
         },
             //modifica un producto existente
     modify: (req,resp) => {
+
 
             try{
 
@@ -106,7 +106,6 @@ const controller = {
                             return picture
                         })
                     }
-
                     const modifiedProd = { ...product[0] , ...parametorsModificados }
                     
                     let newData = data.map(product => {
@@ -128,8 +127,7 @@ const controller = {
                 {
                     resp.status(404).json({message: "Producto no encontrado"});
                 }
-               
-                    
+                    //consultar respuesta 400
 
             }catch(error){
                 resp.status(500).json( {message : "Error interno del servidor"});
@@ -146,6 +144,10 @@ const controller = {
     chekData: (req,resp,next) => {
 
             let {title,price,description,image,gallery,category, mostwanted, stock} = req.body;
+            //MIDDLEWARE: chequea que los datos titulo y precio hayan sido pasados envia el producto armado a create
+            chekData: (req,resp,next) => {
+
+            let {title,price,description,image,gallery} = req.body;
             
             if(!title || !price)
             {
@@ -162,11 +164,7 @@ const controller = {
                     next();
                 }
             }
-            
         }
-
-
-    
 }
 
 
