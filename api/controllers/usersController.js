@@ -118,13 +118,14 @@ const usersController = {
     if(userToEdit){
         userToEdit.email = (req.body.email === undefined) ? this.email : req.body.email;
         userToEdit.username = (req.body.username === undefined) ? this.username : req.body.username;
+        userToEdit.password = (req.body.password === undefined) ? this.password : req.body.password;
         userToEdit.firstname = (req.body.firstname === undefined) ? this.firstname : req.body.firstname;
         userToEdit.lastname = (req.body.lastname === undefined) ? this.lastname : req.body.lastname;
         userToEdit.profilepic = (req.body.profilepic === undefined) ? this.profilepic : req.body.profilepic;
         userToEdit.role = (req.body.role === undefined) ? this.role : req.body.role;   
         res.status(200).json({
             ok: true, 
-            msg: `Usuario ${userToEdit.name} editado con exito`,
+            msg: `Usuario ${userToEdit.username} editado con exito`,
             user: userToEdit
         })     
     }else{
