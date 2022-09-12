@@ -13,6 +13,8 @@ app.get('/api/v1', (req, res) => {
     res.status(200).json('Bienvenido al inicio');
 })
 
+app.use('/api/v1/products', routeProducts);
+
 app.listen(process.env.PORT, () => {
     console.log('Se abrio correctamente en el puerto ' + process.env.PORT);
 })
