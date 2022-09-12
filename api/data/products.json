@@ -50,5 +50,31 @@
         "category": "Dulces",
         "mostwanted": true,
         "stock": 5
+    },
+    {
+        "id": 3,
+        "title": "Alfajor",
+        "price": 40,
+        "description": "Alfajor de las sierras de minas",
+        "image": "Url.Photo",
+        "gallery": [
+            {
+                "picture_id": 1,
+                "picture_url": "Url.PhotoGaleria"
+            }
+        ]
+    },
+    {
+        "id": 4,
+        "title": "Cocoa",
+        "price": 200,
+        "description": "Cocoa molida",
+        "image": "Url.Photo",
+        "gallery": [
+            {
+                "picture_id": 1,
+                "picture_url": "Url.PhotoGaleria"
+            }
+        ]
     }
 ]
