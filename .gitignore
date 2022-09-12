@@ -1,5 +1,5 @@
 node_modules
-# Mac OS X
-.ds
+# MAC OS X
+.DS_Store
 .AppleDouble
 .LSOverride
