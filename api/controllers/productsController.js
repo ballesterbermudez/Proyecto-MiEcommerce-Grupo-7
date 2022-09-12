@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-//const picture = require('./pictureController')
+const picture = require('./pictureController')
 
 const directory = path.resolve(__dirname,"..","data","products.json")
 
@@ -69,7 +69,7 @@ const controller = {
                 
                 if(product.gallery.length > 0)
                 {
-                  //  product.gallery.map(el=> picture.getPicture(el));
+                    product.gallery.map(el=> picture.getPicture(el));
                 }
 
                 let newProduct = {id, ...product}
@@ -111,10 +111,10 @@ const controller = {
 
                     if(parametorsModificados.gallery)
                     {
-                       // parametorsModificados.gallery.map(el =>{
-                        //    let picture = picture.getPicture(el);
-                        //    return picture
-                       // }
+                       parametorsModificados.gallery.map(el =>{
+                           let picture = picture.getPicture(el);
+                           return picture;
+                       })
                     }
                     const modifiedProd = { ...product[0] , ...parametorsModificados }
                     
