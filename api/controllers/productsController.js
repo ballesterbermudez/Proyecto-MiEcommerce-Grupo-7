@@ -59,7 +59,7 @@ const controller = {
                 
                 if(product.gallery.length > 0)
                 {
-                    product.gallery.map(el=> picture.getPicture(el))
+                    product.gallery.map(el=> picture.getPicture(el));
                 }
 
 
