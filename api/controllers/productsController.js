@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const picture = require('./pictureController')
 
 const directory = path.resolve(__dirname,"..","data","products.json")
 
@@ -46,7 +47,7 @@ const controller = {
 
         } ,
             //crea un producto: requiere titulo y precio a travez de un middleware
-        create: (req,resp) =>{
+     create: (req,resp) =>{
 
             let product = req.product;
 
@@ -55,6 +56,12 @@ const controller = {
                 const file =  fs.readFileSync(directory);
                 const data = JSON.parse( file);
                 const id = data[data.length - 1].id + 1;
+                
+                if(product.gallery.length > 0)
+                {
+                    product.gallery.map(el=> picture.getPicture(el));
+                }
+
 
                 let newProduct = {id, ...product}
 
@@ -71,7 +78,7 @@ const controller = {
 
         },
             //modifica un producto existente
-        modify: (req,resp) => {
+    modify: (req,resp) => {
 
             try{
 
@@ -83,6 +90,22 @@ const controller = {
                 if(product.length > 0)
                 {
                     let {...parametorsModificados} = req.body;
+
+                    if(parametorsModificados.precio)
+                    {
+                        if(Number(parametorsModificados.precio) < 0)
+                        {
+                            return req.status(401).json("Precio no puede ser negativo")
+                        }
+                    }
+
+                    if(parametorsModificados.gallery)
+                    {
+                        parametorsModificados.gallery.map(el =>{
+                            let picture = picture.getPicture(el);
+                            return picture
+                        })
+                    }
 
                     const modifiedProd = { ...product[0] , ...parametorsModificados }
                     
@@ -106,7 +129,7 @@ const controller = {
                     resp.status(404).json({message: "Producto no encontrado"});
                 }
                
-                    //consultar respuesta 400
+                    
 
             }catch(error){
                 resp.status(500).json( {message : "Error interno del servidor"});
@@ -114,21 +137,36 @@ const controller = {
 
 
         },
-            //MIDDLEWARE: chequea que los datos titulo y precio hayan sido pasados envia el producto armado a create
-        chekData: (req,resp,next) => {
 
-            let {title,price,description,image,gallery} = req.body;
+    search: (req,resp) => {
+
+        },
+
+            //MIDDLEWARE: chequea que los datos titulo y precio hayan sido pasados envia el producto armado a create
+    chekData: (req,resp,next) => {
+
+            let {title,price,description,image,gallery,category, mostwanted, stock} = req.body;
             
             if(!title || !price)
             {
                 resp.status(400).json({mssage: "Los valores  title y precio son obligatorios"})
             }
-            else
-            {
-                req.product = {title,price,description,image,gallery}
-                next();
+            else {
+                if(Number(precio) < 0)
+                {
+                    resp.status(401).json({mssage: "El precio no puede ser negativo"})
+                }
+                else
+                {
+                    req.product = {title,price,description,image,gallery,category, mostwanted, stock} 
+                    next();
+                }
             }
+            
         }
+
+
+    
 }
 
 
