@@ -3,13 +3,16 @@ const route = express.Router();
 const controller = require('../controllers/productsController');
 
 
-route.get('/', controller.list);
-route.get('/:id', controller.details);
+
+
 route.post('/', controller.chekData, controller.create);
 route.put('/:id', controller.modify);
-route.get('/search', ()=>{});
-route.get('/mostwanted', ()=>{});
-route.delete('/:id', ()=>{});
+route.delete('/:id', controller.delete);
+route.get('/search', controller.search);
+route.get('/mostwanted', controller.mostwanted);
+route.get('/:id', controller.details);
+route.get('/', controller.list);
+
 
 
 module.exports = route
