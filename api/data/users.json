@@ -1,32 +1,68 @@
 [
-    {
-        "id": 0,
-        "email": "god@gmail.com",
-        "username": "god",
-        "password": "kratos",
-        "firstname": "god",
-        "lastname": "kratos",
-        "profilepic": "Url.ProfilePic",
-        "role": "GOD"
-    },
-    {
+  {
+    "id": 0,
+    "email": "god@gmail.com",
+    "username": "god",
+    "password": "kratos",
+    "firstname": "god",
+    "lastname": "kratos",
+    "profilepic": "Url.ProfilePic",
+    "role": "GOD",
+    "cart": []
+  },
+  {
+    "id": 1,
+    "email": "admin@gmail.com",
+    "username": "admin",
+    "password": "admin1234",
+    "firstname": "juan",
+    "lastname": "ventura",
+    "profilepic": "Url.ProfilePic",
+    "role": "ADMIN",
+    "cart": []
+  },
+  {
+    "id": 2,
+    "email": "guest@gmail.com",
+    "username": "guest@gmail.com",
+    "password": "guest1234",
+    "firstname": "diego",
+    "lastname": "perez",
+    "profilepic": "Url.ProfilePic",
+    "role": "GUEST",
+    "cart": [
+      {
         "id": 1,
-        "email": "admin@gmail.com",
-        "username": "admin",
-        "password": "admin1234",
-        "firstname": "juan",
-        "lastname": "ventura",
-        "profilepic": "Url.ProfilePic",
-        "role": "ADMIN"
-    },
-    {
-        "id": 2,
-        "email": "guest@gmail.com",
-        "username": "guest@gmail.com",
-        "password": "guest1234",
-        "firstname": "diego",
-        "lastname": "perez",
-        "profilepic": "Url.ProfilePic",
-        "role": "GUEST"
-    }
+        "title": "Leche",
+        "price": 40,
+        "description": "Muy rica en vitaminas",
+        "image": "Url.Photo",
+        "gallery": [
+          {
+            "picture_id": 1,
+            "picture_url": "Url.PhotoGaleria"
+          }
+        ],
+        "category": "lacteos",
+        "mostwanted": false,
+        "stock": 2
+      },
+      {
+        "id": 1,
+        "title": "Mermelada",
+        "price": 150,
+        "description": "Dulce",
+        "image": "Url.Photo",
+        "gallery": [
+          {
+            "picture_id": 1,
+            "picture_url": "Url.PhotoGaleria"
+          }
+        ],
+        "category": "Dulces",
+        "mostwanted": true,
+        "stock": 5
+      }
+    ]
+  }
 ]
