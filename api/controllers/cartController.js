@@ -1,5 +1,8 @@
 const fs = require("fs");
 const path = require("path");
+
+/*FUNCION AUXILIAR:
+Carga los usuarios en la variable que retorna*/
 function cargarUsuarios() {
   let retorno = undefined;
   try {
@@ -12,13 +15,17 @@ function cargarUsuarios() {
   }
   return retorno;
 }
+
 let users = cargarUsuarios();
 
 function getCarrito(req, res) {
   const { id } = req.params;
   const user = users.find((el) => el.id === Number(id));
   if (user) {
-    res.status(200).json(user.cart);
+    res.status(200).json({
+      user: id,
+      cart: user.cart,
+    });
   } else {
     res.status(404).json({ msg: `Usuario con id ${id} no fue encontrado` });
   }
@@ -31,6 +38,7 @@ function putCarrito(req, res) {
     user.cart = req.body;
     res.status(200).json({
       msg: "Carrito modificado",
+      user: id,
       cart: user.cart,
     });
   } else {

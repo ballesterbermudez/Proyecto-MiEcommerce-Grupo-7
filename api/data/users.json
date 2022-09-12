@@ -32,36 +32,12 @@
     "role": "GUEST",
     "cart": [
       {
-        "id": 1,
-        "title": "Leche",
-        "price": 40,
-        "description": "Muy rica en vitaminas",
-        "image": "Url.Photo",
-        "gallery": [
-          {
-            "picture_id": 1,
-            "picture_url": "Url.PhotoGaleria"
-          }
-        ],
-        "category": "lacteos",
-        "mostwanted": false,
-        "stock": 2
+        "product": 2,
+        "quantity": 2
       },
       {
-        "id": 1,
-        "title": "Mermelada",
-        "price": 150,
-        "description": "Dulce",
-        "image": "Url.Photo",
-        "gallery": [
-          {
-            "picture_id": 1,
-            "picture_url": "Url.PhotoGaleria"
-          }
-        ],
-        "category": "Dulces",
-        "mostwanted": true,
-        "stock": 5
+        "product": 1,
+        "quantity": 9
       }
     ]
   }
