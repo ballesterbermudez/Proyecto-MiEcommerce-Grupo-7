@@ -6,5 +6,6 @@ route.get('/', usersController.listUsers);
 route.get('/:userId', usersController.findUserById);
 route.post('/', usersController.createUser);
 route.put('/:userId', usersController.editUser);
+route.delete('/:userId', usersController.deleteUser)
 
 module.exports = route;
