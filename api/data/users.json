@@ -7,7 +7,8 @@
         "firstname": "god",
         "lastname": "kratos",
         "profilepic": "Url.ProfilePic",
-        "role": "GOD"
+        "role": "GOD",
+        "cart":[]
     },
     {
         "id": 1,
@@ -17,7 +18,8 @@
         "firstname": "juan",
         "lastname": "ventura",
         "profilepic": "Url.ProfilePic",
-        "role": "ADMIN"
+        "role": "ADMIN",
+        "cart":[]
     },
     {
         "id": 2,
@@ -27,6 +29,7 @@
         "firstname": "diego",
         "lastname": "perez",
         "profilepic": "Url.ProfilePic",
-        "role": "GUEST"
+        "role": "GUEST",
+        "cart":[]
     }
 ]
