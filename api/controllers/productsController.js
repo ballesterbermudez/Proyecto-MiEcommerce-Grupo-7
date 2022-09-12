@@ -62,16 +62,21 @@ const controller = {
             let product = req.product;
 
             try{
-
+                
                 const file =  fs.readFileSync(directory);
                 const data = JSON.parse( file);
                 const id = data[data.length - 1].id + 1;
                 
                 if(product.gallery.length > 0)
                 {
-                    product.gallery.map(el=> picture.getPicture(el));
+                    
+                     const newGallery = product.gallery.map(el=> {let pic = picture.getPicture(el);
+                        console.log(pic)
+                        return pic;
+                    });
+                    product.gallery = newGallery;
                 }
-
+               
                 let newProduct = {id, ...product}
 
                 data.push(newProduct);
@@ -235,17 +240,13 @@ const controller = {
     chekData: (req,resp,next) => {
 
             let {title,price,description,image,gallery,category, mostwanted, stock} = req.body;
-            //MIDDLEWARE: chequea que los datos titulo y precio hayan sido pasados envia el producto armado a create
-            chekData: (req,resp,next) => {
-
-            let {title,price,description,image,gallery} = req.body;
             
             if(!title || !price)
             {
                 resp.status(400).json({mssage: "Los valores  title y precio son obligatorios"})
             }
             else {
-                if(Number(precio) < 0)
+                if(Number(price) < 0)
                 {
                     resp.status(401).json({mssage: "El precio no puede ser negativo"})
                 }
@@ -256,6 +257,7 @@ const controller = {
                 }
             }
         }
+    
 }
 
 
