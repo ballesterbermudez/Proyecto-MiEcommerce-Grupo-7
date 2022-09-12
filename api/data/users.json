@@ -1,1 +1,35 @@
-[{"id":0,"email":"god@gmail.com","username":"god","password":"kratos","firstname":"god","lastname":"kratos","profilepic":"Url.ProfilePic","role":"GOD"},{"id":1,"email":"admin@gmail.com","username":"admin","password":"admin1234","firstname":"juan","lastname":"ventura","profilepic":"Url.ProfilePic","role":"ADMIN"},{"id":2,"email":"guest@gmail.com","username":"guest@gmail.com","password":"guest1234","firstname":"diego","lastname":"perez","profilepic":"Url.ProfilePic","role":"GUEST"},{"id":3,"email":"fede@gmail.com","username":"fede","password":"fede1234","firstname":"fede","lastname":"sierra","profilepic":"Url.ProfilePic","role":"GOD"},{"id":4,"email":"fede@gmail.com","username":"fede","password":"fede1234","firstname":"fede","lastname":"sierra","profilepic":"Url.ProfilePic","role":"GOD"},{"id":23,"email":"fede@gmail.com","username":"fede","password":"fede1234","firstname":"fede","lastname":"sierra","role":"GOD"},{"id":20,"email":"fede@gmail.com","username":"fede","password":"fede1234","firstname":"fede","lastname":"sierra","profilepic":"Url.ProfilePic","role":"GOD"},{"id":21,"email":"fede@gmail.com","username":"fede","password":"fede1234","firstname":"fede","lastname":"sierra","profilepic":null,"role":"GOD"}]
+[
+    {
+        "id": 0,
+        "email": "god@gmail.com",
+        "username": "god",
+        "password": "kratos",
+        "firstname": "god",
+        "lastname": "kratos",
+        "profilepic": "Url.ProfilePic",
+        "role": "GOD",
+        "cart":[]
+    },
+    {
+        "id": 1,
+        "email": "admin@gmail.com",
+        "username": "admin",
+        "password": "admin1234",
+        "firstname": "juan",
+        "lastname": "ventura",
+        "profilepic": "Url.ProfilePic",
+        "role": "ADMIN",
+        "cart":[]
+    },
+    {
+        "id": 2,
+        "email": "guest@gmail.com",
+        "username": "guest@gmail.com",
+        "password": "guest1234",
+        "firstname": "diego",
+        "lastname": "perez",
+        "profilepic": "Url.ProfilePic",
+        "role": "GUEST",
+        "cart":[]
+    }
+]
