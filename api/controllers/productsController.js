@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const picture = require('./pictureController')
+//const picture = require('./pictureController')
 
 const directory = path.resolve(__dirname,"..","data","products.json")
 
@@ -14,9 +14,19 @@ const controller = {
            
             const file =  fs.readFileSync(directory);
             const data = JSON.parse( file);
-          
+            const category = req.query.category;
 
-            resp.status(200).json(data);
+            if(category)
+            {
+                const info = data.filter(el => el.category == category)
+                resp.status(200).json(info);
+            }
+            else
+            {
+                resp.status(200).json(data);
+            }
+
+            
 
          }catch(error){
             resp.status(500).json( {message : "No se pudo acceder a la informacion"});
@@ -59,7 +69,7 @@ const controller = {
                 
                 if(product.gallery.length > 0)
                 {
-                    product.gallery.map(el=> picture.getPicture(el));
+                  //  product.gallery.map(el=> picture.getPicture(el));
                 }
 
 
@@ -101,10 +111,10 @@ const controller = {
 
                     if(parametorsModificados.gallery)
                     {
-                        parametorsModificados.gallery.map(el =>{
-                            let picture = picture.getPicture(el);
-                            return picture
-                        })
+                       // parametorsModificados.gallery.map(el =>{
+                        //    let picture = picture.getPicture(el);
+                        //    return picture
+                       // }
                     }
 
                     const modifiedProd = { ...product[0] , ...parametorsModificados }
@@ -137,10 +147,91 @@ const controller = {
 
 
         },
-
+        //busca un producto a travez de una palabra clave
     search: (req,resp) => {
 
+            const keyword = req.query.q;
+
+           
+
+        try{
+            const file =  fs.readFileSync(directory);
+            const data = JSON.parse( file);
+
+            const info = data.filter(el=> {
+                let ret;
+                if(el.title.includes(keyword) )
+                {
+                    ret = el;
+                }
+                if(el.description)
+                {
+                    if(el.description.includes(keyword))
+                        ret = el;
+                }
+                if(el.category)
+                {
+                    if(el.category.includes(keyword))
+                        ret = el
+                }
+                return ret;
+               
+            })
+
+            resp.status(300).json(info);
+
+        }catch(error){
+            resp.status(500).json({message : "Error interno", error: error.message})
+        }
+         
+
+
+
         },
+
+    mostwanted: (req,resp) => {
+
+        try{
+            
+           
+            const file =  fs.readFileSync(directory);
+            const data = JSON.parse( file);
+          
+            const info = data.filter(el => el.mostwanted == true)
+
+            resp.status(200).json(info);
+
+         }catch(error){
+            resp.status(500).json( {message : "No se pudo acceder a la informacion"});
+         }
+    },
+
+    //borra el producto con id pasado por parametro
+    delete: (req,resp) => {
+        try{
+            
+           
+            const file =  fs.readFileSync(directory);
+            const data = JSON.parse( file);
+            const product = data.filter(el=>el.id == req.params.id);
+
+            if(product.length > 0)
+            {
+                const newData = data.filter(el => el.id != req.params.id)
+                fs.writeFileSync(directory,JSON.stringify(newData));
+                resp.status(200).json(product);
+            }
+            else
+            {
+                resp.status(404).json({message: "no existe el articulo"})
+            }
+            
+
+         }catch(error){
+            resp.status(500).json( {message : "Error interno", message: error.message});
+         }
+
+    },
 
             //MIDDLEWARE: chequea que los datos titulo y precio hayan sido pasados envia el producto armado a create
     chekData: (req,resp,next) => {
