@@ -1,4 +1,5 @@
 const verify = {
+   
     chekGetsGeneral: (req,resp,next) =>{
 
         const token = req.token;
@@ -9,18 +10,18 @@ const verify = {
         }
         else
         {
-            resp.status(400).json({message : "acceso no autorizado"});
+            resp.status(403).json({message : "acceso no autorizado"});
         }
 
     },
 
     checkGetUsers: (req,resp,next) =>{
 
-        const token = req.token
+        const token = req.tokens
 
         if(token)
         {
-            if(req.tokens.role==='GOD'|| req.tokens.role==='ADMIN')
+            if(token.role==='GOD'|| token.role==='ADMIN')
             {
                 next();
             }
@@ -32,25 +33,25 @@ const verify = {
                 }
                 else
                 {
-                    resp.status(400).json({message : "acceso no autorizado"});
+                    resp.status(403).json({message : "acceso no autorizado"});
                 }
             }
         }
         else
         {
-            resp.status(400).json({message : "acceso no autorizado"});
+            resp.status(403).json({message : "acceso no autorizado"});
         }
     },
 
     checkUpdateGeneral: (req,resp,next) => {
 
-        if (req.tokens.role==='GOD')
+        if (req.tokens.role==='GOD' || req.tokens.role==='ADMIN')
         {
             next();
         }
         else
         {
-            resp.status(400).json({message : "acceso no autorizado"});
+            resp.status(403).json({message : "acceso no autorizado"});
         }
 
     },
@@ -72,13 +73,13 @@ const verify = {
                 }
                 else
                 {
-                    resp.status(400).json({message : "acceso no autorizado"});
+                    resp.status(403).json({message : "acceso no autorizado"});
                 }
             }
         }
         else
         {
-            resp.status(400).json({message : "acceso no autorizado"});
+            resp.status(403).json({message : "acceso no autorizado"});
         }
 
     }
