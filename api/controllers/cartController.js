@@ -1,5 +1,7 @@
 const fs = require("fs");
 const path = require("path");
+const { getProduct } = require("./productsController");
+//const { getProduct } = require("./productsController");
 
 /*FUNCION AUXILIAR:
 Carga los usuarios en la variable que retorna*/
@@ -35,7 +37,36 @@ function putCarrito(req, res) {
   const { id } = req.params;
   const user = users.find((el) => el.id === Number(id));
   if (user) {
-    user.cart = req.body;
+    user.cart = [];
+    req.body.cart.forEach((elem) => {
+      if (typeof elem.product == "number") {
+        if (getProduct(elem.product) == -1) {
+          res.status(404).json({
+            msg: `El producto con id ${elem.product} no fue encontrado`,
+          });
+        }
+      } else {
+        res.status(400).json({
+          ok: false,
+          msg: `El producto ${id} debe tener un id númerico`,
+        });
+      }
+      if (typeof elem.quantity == "number") {
+        if (elem.quantity < 1) {
+          res.status(400).json({
+            ok: false,
+            msg: `El producto ${id} debe tener una cantidad mayor a cero.`,
+          });
+        }
+      } else {
+        res.status(400).json({
+          ok: false,
+          msg: `El producto ${id} debe tener una cantidad númerica`,
+        });
+      }
+      user.cart.push({ product: elem.product, quantity: elem.quantity });
+    });
+
     res.status(200).json({
       msg: "Carrito modificado",
       user: id,
