@@ -270,7 +270,7 @@ const controller = {
                     next();
                 }
             }
-        }
+        },
 
     getProduct: (id) => {
         
