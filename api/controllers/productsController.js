@@ -257,6 +257,30 @@ const controller = {
                 }
             }
         }
+
+    getProduct: (id) => {
+        
+        let retorno = null;
+
+        try{
+            const file =  fs.readFileSync(directory);
+            const data = JSON.parse( file);
+            const product = data.filter(el=>el.id == id);
+
+            if(product.length > 0)
+            {
+                retorno = product[0];
+            }
+            else
+            {
+                retorno = -1;
+            }
+
+        }catch(error){
+            retorno = -1;
+        }
+       return retorno;
+    }
     
 }
 
