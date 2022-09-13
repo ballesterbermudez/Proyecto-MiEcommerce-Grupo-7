@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-//const picture = require('./pictureController')
+const picture = require('./pictureController')
 
 const directory = path.resolve(__dirname,"..","data","products.json")
 
@@ -19,7 +19,15 @@ const controller = {
             if(category)
             {
                 const info = data.filter(el => el.category == category)
-                resp.status(200).json(info);
+                if(info.legth > 0)
+                {
+                    resp.status(200).json(info);
+                }
+                else
+                {
+                    resp.status(404).json({message: "no se encontro ningun producto con esa categoria"});
+                }
+               
             }
             else
             {
@@ -42,9 +50,9 @@ const controller = {
             const data = JSON.parse( file);
             const prod = data.filter(el=>el.id == req.params.id);
 
-            if(prod)
+            if(prod.legth > 0)
             {
-                resp.status(200).json(prod);
+                resp.status(200).json(prod[0]);
             }
             else
             {
@@ -62,16 +70,21 @@ const controller = {
             let product = req.product;
 
             try{
-
+                
                 const file =  fs.readFileSync(directory);
                 const data = JSON.parse( file);
                 const id = data[data.length - 1].id + 1;
                 
                 if(product.gallery.length > 0)
                 {
-                  //  product.gallery.map(el=> picture.getPicture(el));
+                    
+                     const newGallery = product.gallery.map(el=> {let pic = picture.getPicture(el);
+                        console.log(pic)
+                        return pic;
+                    });
+                    product.gallery = newGallery;
                 }
-
+               
                 let newProduct = {id, ...product}
 
                 data.push(newProduct);
@@ -111,11 +124,17 @@ const controller = {
 
                     if(parametorsModificados.gallery)
                     {
-                       // parametorsModificados.gallery.map(el =>{
-                        //    let picture = picture.getPicture(el);
-                        //    return picture
-                       // }
+                       parametorsModificados.gallery.map(el =>{
+                           let picture = picture.getPicture(el);
+                           return picture;
+                       })
                     }
+
+                    if(parametorsModificados.id)
+                    {
+                        parametorsModificados.id = req.params.id
+                    }
+
                     const modifiedProd = { ...product[0] , ...parametorsModificados }
                     
                     let newData = data.map(product => {
@@ -172,11 +191,11 @@ const controller = {
                     if(el.category.includes(keyword))
                         ret = el
                 }
-                return ret;
+                return resp.status(200).json(ret);
                
             })
 
-            resp.status(300).json(info);
+            resp.status(404).json({message: "No hubieron resultados"});
 
         }catch(error){
             resp.status(500).json({message : "Error interno", error: error.message})
@@ -235,17 +254,13 @@ const controller = {
     chekData: (req,resp,next) => {
 
             let {title,price,description,image,gallery,category, mostwanted, stock} = req.body;
-            //MIDDLEWARE: chequea que los datos titulo y precio hayan sido pasados envia el producto armado a create
-            chekData: (req,resp,next) => {
-
-            let {title,price,description,image,gallery} = req.body;
             
             if(!title || !price)
             {
                 resp.status(400).json({mssage: "Los valores  title y precio son obligatorios"})
             }
             else {
-                if(Number(precio) < 0)
+                if(Number(price) < 0)
                 {
                     resp.status(401).json({mssage: "El precio no puede ser negativo"})
                 }
@@ -255,8 +270,36 @@ const controller = {
                     next();
                 }
             }
+        },
+
+    getProduct: (id) => {
+        
+        let retorno = null;
+
+        try{
+            const file =  fs.readFileSync(directory);
+            const data = JSON.parse( file);
+            const product = data.filter(el=>el.id == id);
+
+            if(product.length > 0)
+            {
+                retorno = product[0];
+            }
+            else
+            {
+                retorno = -1;
+            }
+
+        }catch(error){
+            retorno = -1;
         }
+<<<<<<< HEAD
     }
+=======
+       return retorno;
+    }
+    
+>>>>>>> master
 }
 
 
