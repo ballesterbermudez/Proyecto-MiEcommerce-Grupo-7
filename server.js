@@ -16,6 +16,11 @@ app.get("/api/v1", (req, res) => {
   res.status(200).json("Bienvenido al inicio");
 });
 
+app.use("/api/v1/login", routeLogin);
+app.use("/api/v1/pictures", routePictures);
+app.use("/api/v1/products", routeProducts);
+app.use("/api/v1/users", routeUsers);
+
 app.listen(process.env.PORT, () => {
   console.log("Se abrio correctamente en el puerto " + process.env.PORT);
 });

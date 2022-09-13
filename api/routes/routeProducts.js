@@ -1,14 +1,18 @@
 const express = require('express');
 const route = express.Router();
+const controller = require('../controllers/productsController');
 
 
-route.get('/', ()=>{});
-route.get('/:id', ()=>{});
-route.post('/', ()=>{});
-route.put('/:id', ()=>{});
-route.get('/search', ()=>{});
-route.get('/mostwanted', ()=>{});
-route.delete('/:id', ()=>{});
+
+
+route.post('/', controller.chekData, controller.create);
+route.put('/:id', controller.modify);
+route.delete('/:id', controller.delete);
+route.get('/search', controller.search);
+route.get('/mostwanted', controller.mostwanted);
+route.get('/:id', controller.details);
+route.get('/', controller.list);
+
 
 
 module.exports = route

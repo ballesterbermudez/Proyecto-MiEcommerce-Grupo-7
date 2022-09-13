@@ -40,5 +40,16 @@
         "quantity": 9
       }
     ]
+  },
+  {
+    "id": 3,
+    "email": "fede@gmail.com",
+    "username": "fede",
+    "password": "fede1234",
+    "firstname": "fede",
+    "lastname": "sierra",
+    "profilepic": "url.myprofilepic",
+    "role": "GOD",
+    "cart": []
   }
 ]
