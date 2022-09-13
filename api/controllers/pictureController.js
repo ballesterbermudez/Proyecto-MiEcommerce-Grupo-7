@@ -5,12 +5,18 @@ const path = require('path')
 const pictureController = {
     listPictures : (req, res) => {
         let idProd = req.query.product;
+        if(!idProd) {
+            idProd = req.params.id;
+            if(!idProd){
+                return res.status(400).json('debe ingresar un id') 
+            }
+        }
         let datosProd = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../data/products.json')), 'utf-8');
         let producto = datosProd.find(ele => ele.id == idProd);
         if(producto) {
             return res.status(200).json(producto.gallery)
         } else {
-            return res.status(500).json('Server Error')
+            return res.status(404).json('No se encontro el producto')
         }
     },
     getPictureID : (req, res) => {
