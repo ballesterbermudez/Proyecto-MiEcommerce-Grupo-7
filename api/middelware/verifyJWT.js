@@ -2,7 +2,9 @@ const jwt = require("jsonwebtoken");
 const { request } = require("express");
 
 const verifyJWT = async(req = request, res, next) => {
-  const token=req.headers.token;
+  
+  const token = req.headers.authorization;
+  
  
   try {
     const  tokens = await jwt.verify(token, process.env.JSON_AUTH);
