@@ -2,7 +2,7 @@ const verify = {
    
     chekGetsGeneral: (req,resp,next) =>{
 
-        const token = req.token;
+        const token = req.tokens;
 
         if(token)
         {
@@ -27,9 +27,9 @@ const verify = {
             }
             else
             {
-                if(token.id == req.params.id)
+                if(token.id == req.params.id || token.id == req.params.userId)
                 {
-                    next()
+                    next();
                 }
                 else
                 {
@@ -58,7 +58,7 @@ const verify = {
 
     checkUpdateUser: (req,resp,next) => {
 
-        const token = req.token
+        const token = req.tokens
 
         if(token)
         {
@@ -67,7 +67,7 @@ const verify = {
                 next();
             }
             else{
-                if(token.id == req.params.id)
+                if(token.id == req.params.id || token.id == req.params.userId)
                 {
                     next();
                 }

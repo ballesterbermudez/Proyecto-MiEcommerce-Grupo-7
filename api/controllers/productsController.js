@@ -20,7 +20,7 @@ const controller = {
             if(category)
             {
                 const info = data.filter(el => el.category == category)
-                if(info.legth > 0)
+                if(info.length > 0)
                 {
                     resp.status(200).json(info);
                 }
@@ -51,7 +51,7 @@ const controller = {
             const data = JSON.parse( file);
             const prod = data.filter(el=>el.id == req.params.id);
 
-            if(prod.legth > 0)
+            if(prod.length > 0)
             {
                 resp.status(200).json(prod[0]);
             }
@@ -192,11 +192,14 @@ const controller = {
                     if(el.category.includes(keyword))
                         ret = el
                 }
-                return resp.status(200).json(ret);
+                return ret
                
             })
-
-            resp.status(404).json({message: "No hubieron resultados"});
+            if(info.length > 0) {
+                resp.status(200).json(info)
+            } else {
+                resp.status(404).json({message: "No hubieron resultados"});
+            }
 
         }catch(error){
             resp.status(500).json({message : "Error interno", error: error.message})

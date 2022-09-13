@@ -1,6 +1,6 @@
 const listUsers = require("../data/users.json");
 
-const generateJWT = require("../../helpers/generarToken");
+const generateJWT = require("../../helpers/generateToken");
 const testRoles=(req,res)=>{
   console.log(listUsers)
   res.send(listUsers)

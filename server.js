@@ -20,7 +20,7 @@ app.get("/api/v1", (req, res) => {
 app.use("/api/v1/login", routeLogin);
 app.use("/api/v1/pictures",verifyJWT, routePictures);
 app.use("/api/v1/products",verifyJWT, routeProducts);
-app.use("/api/v1/users",verifyJWT, routeUsers);
+app.use("/api/v1/users", routeUsers);
 app.use("/api/v1/carts",verifyJWT, routeCarts);
 
 app.listen(process.env.PORT, () => {
