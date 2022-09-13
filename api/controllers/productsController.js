@@ -19,7 +19,15 @@ const controller = {
             if(category)
             {
                 const info = data.filter(el => el.category == category)
-                resp.status(200).json(info);
+                if(info.legth > 0)
+                {
+                    resp.status(200).json(info);
+                }
+                else
+                {
+                    resp.status(404).json({message: "no se encontro ningun producto con esa categoria"});
+                }
+               
             }
             else
             {
@@ -42,9 +50,9 @@ const controller = {
             const data = JSON.parse( file);
             const prod = data.filter(el=>el.id == req.params.id);
 
-            if(prod)
+            if(prod.legth > 0)
             {
-                resp.status(200).json(prod);
+                resp.status(200).json(prod[0]);
             }
             else
             {
@@ -121,6 +129,12 @@ const controller = {
                            return picture;
                        })
                     }
+
+                    if(parametorsModificados.id)
+                    {
+                        parametorsModificados.id = req.params.id
+                    }
+
                     const modifiedProd = { ...product[0] , ...parametorsModificados }
                     
                     let newData = data.map(product => {
@@ -177,11 +191,11 @@ const controller = {
                     if(el.category.includes(keyword))
                         ret = el
                 }
-                return ret;
+                return resp.status(200).json(ret);
                
             })
 
-            resp.status(300).json(info);
+            resp.status(404).json({message: "No hubieron resultados"});
 
         }catch(error){
             resp.status(500).json({message : "Error interno", error: error.message})
