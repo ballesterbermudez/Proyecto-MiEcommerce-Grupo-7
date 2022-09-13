@@ -1,10 +1,13 @@
 const express = require('express');
 const route = express.Router();
 const controller = require('../controllers/productsController');
+const pictureController = require('../controllers/pictureController')
 
 
+// alias pictures
+route.get('/:id/pictures', pictureController.listPictures);
 
-
+// rutas products
 route.post('/', controller.chekData, controller.create);
 route.put('/:id', controller.modify);
 route.delete('/:id', controller.delete);
