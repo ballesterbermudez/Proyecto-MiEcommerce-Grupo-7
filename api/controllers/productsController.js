@@ -293,13 +293,8 @@ const controller = {
         }catch(error){
             retorno = -1;
         }
-<<<<<<< HEAD
-    }
-=======
-       return retorno;
-    }
-    
->>>>>>> master
+    return retorno
+    },
 }
 
 
