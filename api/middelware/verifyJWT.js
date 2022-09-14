@@ -14,8 +14,6 @@ const verifyJWT = async(req = request, res, next) => {
   try {
     const  tokens = await jwt.verify(token, process.env.JSON_AUTH);
     req.tokens = tokens;
-
-    console.log(req.tokens)
     next();
   } catch (error) {
     console.log(error);
