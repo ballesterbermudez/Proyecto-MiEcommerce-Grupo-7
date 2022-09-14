@@ -1,5 +1,6 @@
 const e = require('express');
 const fs = require('fs');
+const { type } = require('os');
 const path = require('path')
 
 const pictureController = {
@@ -81,7 +82,7 @@ const pictureController = {
             }
             fs.writeFileSync(path.resolve(__dirname, '../data/pictures.json'), JSON.stringify(datosPictures))
             let picture = {
-                id,
+                id: Number(id),
                 url: req.body.url,
                 descripcion: req.body.descripcion,
             }
