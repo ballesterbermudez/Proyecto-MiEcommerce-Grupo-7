@@ -31,14 +31,14 @@ const login = async (req, res) => {
     } else {
       res.status(400).json({
         ok: false,
-        msg: "Este usuario no existe",
+        msg: "Usuario y/o contraseña incorrectas",
       });
     }
   } catch (error) {
     console.log(error);
     res.status(500).json({
       ok: false,
-      msg: "Login",
+      msg: "",
     });
   }
 };
