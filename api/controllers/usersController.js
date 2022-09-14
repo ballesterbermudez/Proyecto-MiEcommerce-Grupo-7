@@ -18,16 +18,35 @@ const writeUserDB = (dataFile, arr) => {
   fs.writeFileSync(userDirectory, JSON.stringify(arr));
 };
 
+const userConverter = (user) => {
+  if (user) {
+    const userDT = {
+      id: user.id,
+      email: user.email,
+      username: user.username,
+      firstname: user.firstname,
+      lastname: user.lastname,
+      profilepic: user.profilepic,
+      role: user.role,
+      cart: user.cart,
+    };
+    return userDT;
+  }
+  return null;
+};
 // ---------------------------------------------------------------------
 
+const roles = ["GUEST", "ADMIN", "GOD"];
 const usersController = {
   listUsers: (req, res) => {
     try {
       const users = readUserDB("users.json");
+
+      const usersDT = users.map((ele) => userConverter(ele));
       res.status(200).json({
         ok: true,
         msg: "Lista de usuarios obtenida correctamente",
-        users: users,
+        users: usersDT,
       });
     } catch (error) {
       console.log(error);
@@ -41,16 +60,16 @@ const usersController = {
     try {
       const user = findByIdDB("users.json", req.params.userId);
       if (user) {
+        const userDT = userConverter(user);
         res.status(200).json({
           ok: true,
           msg: "Usuario obtenido correctamente",
-          users: user,
+          users: userDT,
         });
       } else {
         res.status(401).json({
           ok: false,
           msg: `Usuario con id ${req.params.userId} no existe`,
-          users: user,
         });
       }
     } catch (error) {
@@ -63,10 +82,17 @@ const usersController = {
   },
   createUser: (req, res) => {
     try {
+      const { role } = req.body;
       if (findByIdDB("users.json", req.body.id)) {
         res.status(412).json({
           ok: false,
           msg: `El usuario con id ${req.body.id} ya existe`,
+        });
+      } else if (!roles.includes(role.toUpperCase())) {
+        console.log(req.body.role);
+        res.status(412).json({
+          ok: false,
+          msg: `El rol debe ser GUEST, ADMIN o GOD`,
         });
       } else if (
         req.body.id !== undefined &&
@@ -74,8 +100,7 @@ const usersController = {
         req.body.username !== undefined &&
         req.body.password !== undefined &&
         req.body.firstname !== undefined &&
-        req.body.lastname !== undefined &&
-        req.body.role !== undefined
+        req.body.lastname !== undefined
       ) {
         const users = readUserDB("users.json");
         const newUser = {
@@ -87,18 +112,18 @@ const usersController = {
           lastname: req.body.lastname,
           profilepic:
             req.body.profilepic === undefined ? null : req.body.profilepic,
-          role: req.body.role,
+          role: req.body.role.toUpperCase(),
           cart: [],
         };
 
         users.push(newUser);
-        console.log("func");
+        const newUserDT = userConverter(newUser);
         writeUserDB("users.json", users);
 
         res.status(200).json({
           ok: true,
           msg: `El usuario ${req.body.firstname} se ha creado correctamente`,
-          user: newUser,
+          user: newUserDT,
         });
       } else {
         res.status(412).json({
@@ -113,30 +138,44 @@ const usersController = {
         msg: "Error al leer la base de datos",
       });
     }
-  },
-  editUser: (req, res) => {
+  },editUser: (req, res) => {
     try {
       const userToEdit = findByIdDB("users.json", req.params.userId);
-
-      if (userToEdit) {
+      const { role } = req.body;
+      if (role !== undefined && !roles.includes(role.toUpperCase())) {
+        res.status(412).json({
+          ok: false,
+          msg: `El rol debe ser GUEST, ADMIN o GOD`,
+        });
+      } else if (userToEdit) {
         userToEdit.email =
-          req.body.email === undefined ? this.email : req.body.email;
+          req.body.email === undefined 
+            ? userToEdit.email 
+            : req.body.email;
         userToEdit.username =
-          req.body.username === undefined ? this.username : req.body.username;
+          req.body.username === undefined
+            ? userToEdit.username
+            : req.body.username;
         userToEdit.password =
-          req.body.password === undefined ? this.password : req.body.password;
+          req.body.password === undefined
+            ? userToEdit.password
+            : req.body.password;
         userToEdit.firstname =
           req.body.firstname === undefined
-            ? this.firstname
+            ? userToEdit.firstname
             : req.body.firstname;
         userToEdit.lastname =
-          req.body.lastname === undefined ? this.lastname : req.body.lastname;
+          req.body.lastname === undefined
+            ? userToEdit.lastname
+            : req.body.lastname;
         userToEdit.profilepic =
           req.body.profilepic === undefined
-            ? this.profilepic
+            ? userToEdit.profilepic
             : req.body.profilepic;
         userToEdit.role =
-          req.body.role === undefined ? this.role : req.body.role;
+          req.body.role === undefined
+            ? userToEdit.role
+            : req.body.role.toUpperCase();
 
         const users = readUserDB("users.json");
         const newUserData = users.filter(
@@ -144,11 +183,11 @@ const usersController = {
         );
         newUserData.push(userToEdit);
         writeUserDB("users.json", newUserData);
-
+        const userEditedDT = userConverter(userToEdit);
         res.status(200).json({
           ok: true,
           msg: `Usuario ${userToEdit.username} editado con exito`,
-          user: userToEdit,
+          user: userEditedDT,
         });
       } else {
         res.status(404).json({
@@ -174,10 +213,11 @@ const usersController = {
           (ele) => ele.id !== Number(req.params.userId)
         );
         writeUserDB("users.json", newUserData);
+        const userDeletedDT = userConverter(userToDelete);
         res.status(200).json({
           ok: true,
           msg: `Se ha borrado el usuario.`,
-          userDeleted: userToDelete,
+          userDeleted: userDeletedDT,
         });
       } else {
         res.status(404).json({
