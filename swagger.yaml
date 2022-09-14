@@ -36,7 +36,7 @@ paths:
               properties:
                 username:
                   type: string
-                  example: guest@gmail.com
+                  example: guest
                 password:
                   type: string
                   example: guest1234
@@ -117,7 +117,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/usuario'
+              $ref: '#/components/schemas/usuarioconpass'
       responses:
         '200':
           description: crea un usuario nuevo
@@ -572,7 +572,7 @@ paths:
               type: object
               properties:
                 id:
-                  type: string
+                  type: number
                 url:
                   type: string
                 descripcion:
@@ -1083,6 +1083,25 @@ components:
           quantity:
             type: number
     usuario:
+      type: object
+      properties:
+        id:
+          type: number
+        email:
+          type: string
+        username:
+          type: string
+        firstname:
+          type: string
+        lastname:
+          type: string
+        profilepic:
+          type: string
+        role:
+          type: string
+        cart:
+          $ref: '#/components/schemas/cart'
+    usuarioconpass:
       type: object
       properties:
         id:
