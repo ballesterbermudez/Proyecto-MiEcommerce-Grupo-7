@@ -1,7 +1,6 @@
-const e = require('express');
-const fs = require('fs');
-const { type } = require('os');
+
 const path = require('path')
+const persistence = require('../persistence/persistence');
 
 const pictureController = {
     listPictures : (req, res) => {
@@ -13,8 +12,7 @@ const pictureController = {
                     return res.status(400).json('debe ingresar un id') 
                 }
             }
-            let datosProd = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../data/products.json')), 'utf-8');
-            let producto = datosProd.find(ele => ele.id == idProd);
+            let producto = persistence.findByIdDB("products.json" , idProd)   
             if(producto) {
                 return res.status(200).json(producto.gallery)
             } else {
@@ -27,8 +25,8 @@ const pictureController = {
     },
     getPictureID : (req, res) => {
         try {
-            let datosPictures = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../data/pictures.json')), 'utf-8');
-            let picture = datosPictures.find(ele => ele.id == req.params.id);
+         
+            let picture = persistence.findByIdDB("pictures.json", req.params.id)
             if(picture) {
                 return res.status(200).json(picture);
             } else {
@@ -52,9 +50,9 @@ const pictureController = {
                 url,
                 descripcion,
             }
-            let datosPictures = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../data/pictures.json')), 'utf-8');
+            let datosPictures = persistence.readDB('pictures.json');
             datosPictures.push(picture);
-            fs.writeFileSync(path.resolve(__dirname, '../data/pictures.json'), JSON.stringify(datosPictures))
+            persistence.writeDB('pictures.json', datosPictures);
             res.status(200).json(picture);
         } catch (error) {
             console.log(error);
@@ -65,7 +63,7 @@ const pictureController = {
         try {   
             let id = req.params.id;
             let encontre = false;
-            let datosPictures = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../data/pictures.json')), 'utf-8');
+            let datosPictures = persistence.readDB('pictures.json');
             datosPictures.forEach(ele => {
                 if(ele.id == id) {
                     if(ele.url)
@@ -80,7 +78,7 @@ const pictureController = {
             if(!encontre) {
                 return res.status(404).json('no se encontro la imagen')
             }
-            fs.writeFileSync(path.resolve(__dirname, '../data/pictures.json'), JSON.stringify(datosPictures))
+            persistence.writeDB("pictures.json", dataosPictures);
             let picture = {
                 id: Number(id),
                 url: req.body.url,
@@ -98,7 +96,7 @@ const pictureController = {
             if(!id) {
                 res.status(400).json('debe ingresar un id')
             }
-            let datosPictures = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../data/pictures.json')), 'utf-8');
+            let datosPictures = persistence.readDB("pictures.json")
             let picture;
             let pictures = datosPictures.filter(ele => {
                 if(ele.id != id)
@@ -109,7 +107,7 @@ const pictureController = {
             if(datosPictures.length == pictures.length) {
                 res.status(404).json('No se encontro la picture')
             }
-            fs.writeFileSync(path.resolve(__dirname, '../data/pictures.json'), JSON.stringify(pictures))
+            persistence.writeDB('pictures.json', pictures);
             res.status(200).json(picture);
         } catch (error) {
             console.log(error);
@@ -117,8 +115,8 @@ const pictureController = {
         }
     },
     getPicture : (id) => {
-        let datosPictures = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../data/pictures.json')), 'utf-8');
-        return datosPictures.find(ele => ele.id == id);
+        
+        return persistence.findByIdDB("pictures.json", id);
     }
 }
 

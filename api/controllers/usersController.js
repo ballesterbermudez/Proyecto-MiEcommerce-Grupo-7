@@ -1,22 +1,5 @@
-const { table } = require("console");
-const fs = require("fs");
-const path = require("path");
+const persistence = require('../persistence/persistence')
 
-// FUNCIONES POR SI QUERES SACARLAS A OTRO ARCHIVO >>------------------
-
-const readUserDB = (dataFile) => {
-  const userDirectory = path.resolve(__dirname, "..", "data", dataFile);
-  return JSON.parse(fs.readFileSync(userDirectory, "utf-8"));
-};
-const findByIdDB = (dataFile, id) => {
-  const userDirectory = path.resolve(__dirname, "..", "data", dataFile);
-  const data = JSON.parse(fs.readFileSync(userDirectory, "utf-8"));
-  return data.find((ele) => ele.id === Number(id));
-};
-const writeUserDB = (dataFile, arr) => {
-  const userDirectory = path.resolve(__dirname, "..", "data", dataFile);
-  fs.writeFileSync(userDirectory, JSON.stringify(arr));
-};
 
 const userConverter = (user) => {
   if (user) {
@@ -40,7 +23,7 @@ const roles = ["GUEST", "ADMIN", "GOD"];
 const usersController = {
   listUsers: (req, res) => {
     try {
-      const users = readUserDB("users.json");
+      const users = persistence.readDB("users.json");
 
       const usersDT = users.map((ele) => userConverter(ele));
       res.status(200).json({
@@ -58,7 +41,7 @@ const usersController = {
   },
   findUserById: (req, res) => {
     try {
-      const user = findByIdDB("users.json", req.params.userId);
+      const user = persistence.findByIdDB("users.json", req.params.userId);
       if (user) {
         const userDT = userConverter(user);
         res.status(200).json({
@@ -83,7 +66,7 @@ const usersController = {
   createUser: (req, res) => {
     try {
       const { role } = req.body;
-      if (findByIdDB("users.json", req.body.id)) {
+      if (persistence.findByIdDB("users.json", req.body.id)) {
         res.status(412).json({
           ok: false,
           msg: `El usuario con id ${req.body.id} ya existe`,
@@ -102,7 +85,7 @@ const usersController = {
         req.body.firstname !== undefined &&
         req.body.lastname !== undefined
       ) {
-        const users = readUserDB("users.json");
+        const users = persistence.readDB("users.json");
         const newUser = {
           id: req.body.id,
           email: req.body.email,
@@ -118,7 +101,7 @@ const usersController = {
 
         users.push(newUser);
         const newUserDT = userConverter(newUser);
-        writeUserDB("users.json", users);
+        persistence.writeDB("users.json", users);
 
         res.status(200).json({
           ok: true,
@@ -141,7 +124,7 @@ const usersController = {
   },
   editUser: (req, res) => {
     try {
-      const userToEdit = findByIdDB("users.json", req.params.userId);
+      const userToEdit = persistence.findByIdDB("users.json", req.params.userId);
       const { role } = req.body;
       if (role !== undefined && !roles.includes(role.toUpperCase())) {
         res.status(412).json({
@@ -178,12 +161,12 @@ const usersController = {
             ? userToEdit.role
             : req.body.role.toUpperCase();
 
-        const users = readUserDB("users.json");
+        const users = persistence.readDB("users.json");
         const newUserData = users.filter(
           (ele) => ele.id !== Number(req.params.userId)
         );
         newUserData.push(userToEdit);
-        writeUserDB("users.json", newUserData);
+        persistence.writeDB("users.json", newUserData);
         const userEditedDT = userConverter(userToEdit);
         res.status(200).json({
           ok: true,
@@ -206,13 +189,9 @@ const usersController = {
   },
   deleteUser: (req, res) => {
     try {
-      const userToDelete = findByIdDB("users.json", req.params.userId);
+      const userToDelete = persistence.findByIdDB("users.json", req.params.userId);
       if (userToDelete) {
-        const users = readUserDB("users.json");
-        const newUserData = users.filter(
-          (ele) => ele.id !== Number(req.params.userId)
-        );
-        writeUserDB("users.json", newUserData);
+        persistence.removeFromDB("users.json", userToDelete.id)
         const userDeletedDT = userConverter(userToDelete);
         res.status(200).json({
           ok: true,
