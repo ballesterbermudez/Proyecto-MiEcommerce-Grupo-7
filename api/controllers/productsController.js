@@ -105,9 +105,7 @@ const controller = {
 
             try{
 
-                
                 let product = persistence.findByIdDB("products.json", req.params.id)
-               
 
                 if(product)
                 {
@@ -120,22 +118,20 @@ const controller = {
                             return req.status(401).json("Precio no puede ser negativo")
                         }
                     }
-
                     if(parametorsModificados.gallery)
                     {
-                       parametorsModificados.gallery.map(el =>{
-                           let picture = picture.getPicture(el);
-                           return picture;
+                       let nuevagalleria = parametorsModificados.gallery.map(el =>{
+                           let pictures = picture.getPicture(el);
+                           return pictures;
                        })
+                       parametorsModificados.gallery = nuevagalleria;
                     }
-
                     if(parametorsModificados.id)
                     {
-                        parametorsModificados.id = req.params.id
+                        parametorsModificados.id = Number(req.params.id)
                     }
 
                     const modifiedProd = { ...product , ...parametorsModificados }
- 
                     persistence.updateDB("products.json", modifiedProd);
 
                     resp.status(200).json(modifiedProd);
