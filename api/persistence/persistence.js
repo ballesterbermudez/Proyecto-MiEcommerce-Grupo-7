@@ -26,7 +26,7 @@ const persistence = {
     updateDB: (datafile, el) => {
 
         
-        let data = this.readDB(datafile)
+        let data = persistence.readDB(datafile)
 
         let newData = data.map(element => {
             let aux;
@@ -37,7 +37,7 @@ const persistence = {
             }
             return aux;})
         
-        this.writeDB(datafile,newData);
+            persistence.writeDB(datafile,newData);
 
     },
     
