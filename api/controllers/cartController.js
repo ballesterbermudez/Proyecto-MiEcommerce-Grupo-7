@@ -38,10 +38,6 @@ function putCarrito(req, res) {
   const user = persistance.findByIdDB("users.json", id)
   if (user) {
     user.cart = [];
-<<<<<<< HEAD
-=======
-
->>>>>>> master
     req.body.forEach((elem) => {
       if (typeof elem.product == "number") {
         if (getProduct(elem.product) == -1) {
