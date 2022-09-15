@@ -38,7 +38,7 @@ function putCarrito(req, res) {
   const user = users.find((el) => el.id === Number(id));
   if (user) {
     user.cart = [];
-    req.body.cart.forEach((elem) => {
+    req.body.forEach((elem) => {
       if (typeof elem.product == "number") {
         if (getProduct(elem.product) == -1) {
           res.status(404).json({
