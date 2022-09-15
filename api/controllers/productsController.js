@@ -110,12 +110,14 @@ const controller = {
                 if(product)
                 {
                     let {...parametorsModificados} = req.body;
-
-                    if(parametorsModificados.precio)
+                   
+                    if(parametorsModificados.price)
                     {
-                        if(Number(parametorsModificados.precio) < 0)
+                        
+                        if(parametorsModificados.price < 0)
                         {
-                            return req.status(401).json("Precio no puede ser negativo")
+                            
+                            return resp.status(401).json({message: "Precio no puede ser negativo"})
                         }
                     }
                     if(parametorsModificados.gallery)
