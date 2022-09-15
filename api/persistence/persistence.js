@@ -45,7 +45,7 @@ const persistence = {
 
         let data = this.readDB(datafile);
         let newData = data.filter(el => el.id != id)
-        this.writeDB(datafile,newData);
+        persistence.writeDB(datafile,newData);
     }
 
     
