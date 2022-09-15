@@ -120,11 +120,11 @@ const controller = {
                     }
                     if(parametorsModificados.gallery)
                     {
-                       let nuevagalleria = parametorsModificados.gallery.map(el =>{
-                           let pictures = picture.getPicture(el);
-                           return pictures;
-                       })
-                       parametorsModificados.gallery = nuevagalleria;
+                        let nuevagalleria = parametorsModificados.gallery.map(el =>{
+                        let pictures = picture.getPicture(el);
+                        return pictures;
+                    })
+                    parametorsModificados.gallery = nuevagalleria;
                     }
                     if(parametorsModificados.id)
                     {
