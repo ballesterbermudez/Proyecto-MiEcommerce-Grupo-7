@@ -51,7 +51,7 @@ const controller = {
             
             const prod = persistence.findByIdDB("products.json", req.params.id)
 
-            if(prod.length > 0)
+            if(prod)
             {
                 resp.status(200).json(prod[0]);
             }

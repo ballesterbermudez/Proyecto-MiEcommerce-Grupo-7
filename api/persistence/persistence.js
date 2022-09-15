@@ -12,6 +12,7 @@ const persistence = {
       
     findByIdDB : (dataFile, id) => {
         const userDirectory = path.resolve(__dirname, "..", "data", dataFile);
+        
         const data = JSON.parse(fs.readFileSync(userDirectory, "utf-8"));
         return data.find((ele) => ele.id === Number(id));
       },
