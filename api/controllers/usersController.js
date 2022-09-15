@@ -138,7 +138,8 @@ const usersController = {
         msg: "Error al leer la base de datos",
       });
     }
-  },editUser: (req, res) => {
+  },
+  editUser: (req, res) => {
     try {
       const userToEdit = findByIdDB("users.json", req.params.userId);
       const { role } = req.body;
@@ -203,7 +204,6 @@ const usersController = {
       });
     }
   },
-  //HACER UPDATE CON BORRAR CARRITO ANTES DE BORRAR USER
   deleteUser: (req, res) => {
     try {
       const userToDelete = findByIdDB("users.json", req.params.userId);
