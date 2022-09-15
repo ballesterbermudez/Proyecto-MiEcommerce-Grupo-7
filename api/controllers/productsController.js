@@ -1,9 +1,8 @@
 
-const fs = require('fs');
 const path = require('path');
 const picture = require('./pictureController')
 const persistence = require('../persistence/persistence');
-const { throws } = require('assert');
+
 
 const directory = path.resolve(__dirname,"..","data",)
 
@@ -53,7 +52,7 @@ const controller = {
 
             if(prod)
             {
-                resp.status(200).json(prod[0]);
+                resp.status(200).json(prod);
             }
             else
             {
@@ -80,7 +79,7 @@ const controller = {
                 {
                     
                      const newGallery = product.gallery.map(el=> {let pic = picture.getPicture(el);
-                        console.log(pic)
+                        
                         return pic;
                     });
                     product.gallery = newGallery;
@@ -108,6 +107,7 @@ const controller = {
 
                 
                 let product = persistence.findByIdDB("products.json", req.params.id)
+               
 
                 if(product)
                 {
@@ -144,7 +144,7 @@ const controller = {
                 {
                     resp.status(404).json({message: "Producto no encontrado"});
                 }
-                    //consultar respuesta 400
+                   
 
             }catch(error){
                 resp.status(500).json( {message : "Error interno del servidor"});
