@@ -43,7 +43,7 @@ const persistence = {
     
     removeFromDB: (datafile, id) =>{
 
-        let data = this.readDB(datafile);
+        let data = persistence.readDB(datafile);
         let newData = data.filter(el => el.id != id)
         persistence.writeDB(datafile,newData);
     }
