@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const { getProduct } = require("./productsController");
+const persistance = require('../persistence/persistence')
 //const { getProduct } = require("./productsController");
 
 /*FUNCION AUXILIAR:
@@ -8,9 +9,7 @@ Carga los usuarios en la variable que retorna*/
 function cargarUsuarios() {
   let retorno = undefined;
   try {
-    retorno = JSON.parse(
-      fs.readFileSync(path.resolve("./api/data/users.json"))
-    );
+    retorno = persistance.readDB("users.json");
   } catch (err) {
     console.log(err);
     res.status(500).json({ msg: "Base de datos no encontrada" });
@@ -18,9 +17,9 @@ function cargarUsuarios() {
   return retorno;
 }
 
-let users = cargarUsuarios();
 
 function getCarrito(req, res) {
+  const users = cargarUsuarios();
   const { id } = req.params;
   const user = users.find((el) => el.id === Number(id));
   if (user) {
@@ -34,8 +33,9 @@ function getCarrito(req, res) {
 }
 
 function putCarrito(req, res) {
+
   const { id } = req.params;
-  const user = users.find((el) => el.id === Number(id));
+  const user = persistance.findByIdDB("users.json", id)
   if (user) {
     user.cart = [];
     req.body.cart.forEach((elem) => {
@@ -67,6 +67,8 @@ function putCarrito(req, res) {
       user.cart.push({ product: elem.product, quantity: elem.quantity });
     });
 
+    persistance.updateDB("users.json", user);
+    
     res.status(200).json({
       msg: "Carrito modificado",
       user: id,

@@ -1,8 +1,12 @@
 const fs = require('fs')
+const path = require('path');
+
 
 const persistence = {
     readDB:  (dataFile) => {
+        
         const userDirectory = path.resolve(__dirname, "..", "data", dataFile);
+        
         return JSON.parse(fs.readFileSync(userDirectory, "utf-8"));
       },
       
@@ -17,10 +21,11 @@ const persistence = {
         fs.writeFileSync(userDirectory, JSON.stringify(arr));
       },
 
+      //Prerrequisito el debe existir en el datafile
     updateDB: (datafile, el) => {
 
-        const userDirectory = path.resolve(__dirname, "..", "data", dataFile);
-        let data = JSON.parse(userDirectory);
+        
+        let data = this.readDB(datafile)
 
         let newData = data.map(element => {
             let aux;
