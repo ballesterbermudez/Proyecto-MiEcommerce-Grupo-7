@@ -1,9 +1,10 @@
 
-const fs = require('fs');
 const path = require('path');
 const picture = require('./pictureController')
+const persistence = require('../persistence/persistence');
 
-const directory = path.resolve(__dirname,"..","data","products.json")
+
+const directory = path.resolve(__dirname,"..","data",)
 
 const controller = {
 
@@ -13,8 +14,7 @@ const controller = {
          try{
             
            
-            const file =  fs.readFileSync(directory);
-            const data = JSON.parse( file);
+            const data = persistence.readDB("products.json")
             const category = req.query.category;
 
             if(category)
@@ -47,13 +47,12 @@ const controller = {
 
         try{
 
-            const file =  fs.readFileSync(directory);
-            const data = JSON.parse( file);
-            const prod = data.filter(el=>el.id == req.params.id);
+            
+            const prod = persistence.findByIdDB("products.json", req.params.id)
 
-            if(prod.length > 0)
+            if(prod)
             {
-                resp.status(200).json(prod[0]);
+                resp.status(200).json(prod);
             }
             else
             {
@@ -72,15 +71,15 @@ const controller = {
 
             try{
                 
-                const file =  fs.readFileSync(directory);
-                const data = JSON.parse( file);
+                
+                const data = persistence.readDB("products.json")
                 const id = data[data.length - 1].id + 1;
                 
                 if(product.gallery.length > 0)
                 {
                     
                      const newGallery = product.gallery.map(el=> {let pic = picture.getPicture(el);
-                        console.log(pic)
+                        
                         return pic;
                     });
                     product.gallery = newGallery;
@@ -90,7 +89,7 @@ const controller = {
 
                 data.push(newProduct);
 
-                fs.writeFileSync(directory,JSON.stringify(data));
+                persistence.writeDB("products.json", data);
 
                 resp.status(200).json(newProduct);
 
@@ -106,12 +105,9 @@ const controller = {
 
             try{
 
+                let product = persistence.findByIdDB("products.json", req.params.id)
 
-                const file =  fs.readFileSync(directory);
-                let data = JSON.parse( file);
-                let product = data.filter(el=>el.id == req.params.id);
-
-                if(product.length > 0)
+                if(product)
                 {
                     let {...parametorsModificados} = req.body;
 
@@ -122,34 +118,21 @@ const controller = {
                             return req.status(401).json("Precio no puede ser negativo")
                         }
                     }
-
                     if(parametorsModificados.gallery)
                     {
-                       parametorsModificados.gallery.map(el =>{
-                           let picture = picture.getPicture(el);
-                           return picture;
+                       let nuevagalleria = parametorsModificados.gallery.map(el =>{
+                           let pictures = picture.getPicture(el);
+                           return pictures;
                        })
+                       parametorsModificados.gallery = nuevagalleria;
                     }
-
                     if(parametorsModificados.id)
                     {
-                        parametorsModificados.id = req.params.id
+                        parametorsModificados.id = Number(req.params.id)
                     }
 
-                    const modifiedProd = { ...product[0] , ...parametorsModificados }
-                    
-                    let newData = data.map(product => {
-                        let prod;
-                        if (product.id == modifiedProd.id) {
-                           prod = modifiedProd;
-                        } else {
-                           prod =product;
-                        }
-                        return prod;})
-
-                      
-
-                    fs.writeFileSync(directory,JSON.stringify(newData))
+                    const modifiedProd = { ...product , ...parametorsModificados }
+                    persistence.updateDB("products.json", modifiedProd);
 
                     resp.status(200).json(modifiedProd);
                 }
@@ -157,7 +140,7 @@ const controller = {
                 {
                     resp.status(404).json({message: "Producto no encontrado"});
                 }
-                    //consultar respuesta 400
+                   
 
             }catch(error){
                 resp.status(500).json( {message : "Error interno del servidor"});
@@ -173,8 +156,8 @@ const controller = {
            
 
         try{
-            const file =  fs.readFileSync(directory);
-            const data = JSON.parse( file);
+            
+            const data = persistence.readDB("products.json");
 
             const info = data.filter(el=> {
                 let ret;
@@ -215,8 +198,8 @@ const controller = {
         try{
             
            
-            const file =  fs.readFileSync(directory);
-            const data = JSON.parse( file);
+           
+            const data = persistence.readDB("products.json")
           
             const info = data.filter(el => el.mostwanted == true)
 
@@ -232,14 +215,12 @@ const controller = {
         try{
             
            
-            const file =  fs.readFileSync(directory);
-            const data = JSON.parse( file);
-            const product = data.filter(el=>el.id == req.params.id);
+         
+            const product = persistence.findByIdDB("products.json", req.params.id);
 
-            if(product.length > 0)
+            if(product)
             {
-                const newData = data.filter(el => el.id != req.params.id)
-                fs.writeFileSync(directory,JSON.stringify(newData));
+                persistence.removeFromDB("products.json", req.params.id)
                 resp.status(200).json(product);
             }
             else
@@ -278,25 +259,8 @@ const controller = {
 
     getProduct: (id) => {
         
-        let retorno = null;
+        let retorno = persistence.findByIdDB("products.json", id);
 
-        try{
-            const file =  fs.readFileSync(directory);
-            const data = JSON.parse( file);
-            const product = data.filter(el=>el.id == id);
-
-            if(product.length > 0)
-            {
-                retorno = product[0];
-            }
-            else
-            {
-                retorno = -1;
-            }
-
-        }catch(error){
-            retorno = -1;
-        }
     return retorno
     },
 }
