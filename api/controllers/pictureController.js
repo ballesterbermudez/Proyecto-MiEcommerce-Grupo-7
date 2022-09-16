@@ -115,7 +115,6 @@ const pictureController = {
         }
     },
     getPicture : (id) => {
-        
         return persistence.findByIdDB("pictures.json", id);
     }
 }

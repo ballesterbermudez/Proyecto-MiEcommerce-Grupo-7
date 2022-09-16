@@ -12,8 +12,9 @@ const persistence = {
       
     findByIdDB : (dataFile, id) => {
         const userDirectory = path.resolve(__dirname, "..", "data", dataFile);
+        
         const data = JSON.parse(fs.readFileSync(userDirectory, "utf-8"));
-        return data.find((ele) => ele.id === Number(id));
+        return data.find((ele) => ele.id == id);
       },
     
     writeDB : (dataFile, arr) => {
@@ -25,7 +26,7 @@ const persistence = {
     updateDB: (datafile, el) => {
 
         
-        let data = this.readDB(datafile)
+        let data = persistence.readDB(datafile)
 
         let newData = data.map(element => {
             let aux;
@@ -36,15 +37,15 @@ const persistence = {
             }
             return aux;})
         
-        this.writeDB(datafile,newData);
+            persistence.writeDB(datafile,newData);
 
     },
     
     removeFromDB: (datafile, id) =>{
 
-        let data = this.readDB(datafile);
+        let data = persistence.readDB(datafile);
         let newData = data.filter(el => el.id != id)
-        this.writeDB(datafile,newData);
+        persistence.writeDB(datafile,newData);
     }
 
     

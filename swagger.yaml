@@ -282,6 +282,12 @@ paths:
           required: true
           schema:
             type: number
+      requestBody:
+        content:
+          application/json:
+            schema:
+                $ref: '#/components/schemas/usuarioconpass'
+                  
       responses:
         '200':
           description: detalles del usuario modificado

@@ -1,9 +1,8 @@
 
-const fs = require('fs');
 const path = require('path');
 const picture = require('./pictureController')
 const persistence = require('../persistence/persistence');
-const { throws } = require('assert');
+
 
 const directory = path.resolve(__dirname,"..","data",)
 
@@ -51,9 +50,9 @@ const controller = {
             
             const prod = persistence.findByIdDB("products.json", req.params.id)
 
-            if(prod.length > 0)
+            if(prod)
             {
-                resp.status(200).json(prod[0]);
+                resp.status(200).json(prod);
             }
             else
             {
@@ -80,7 +79,7 @@ const controller = {
                 {
                     
                      const newGallery = product.gallery.map(el=> {let pic = picture.getPicture(el);
-                        console.log(pic)
+                        
                         return pic;
                     });
                     product.gallery = newGallery;
@@ -106,36 +105,35 @@ const controller = {
 
             try{
 
-                
                 let product = persistence.findByIdDB("products.json", req.params.id)
 
                 if(product)
                 {
                     let {...parametorsModificados} = req.body;
-
-                    if(parametorsModificados.precio)
+                   
+                    if(parametorsModificados.price)
                     {
-                        if(Number(parametorsModificados.precio) < 0)
+                        
+                        if(parametorsModificados.price < 0)
                         {
-                            return req.status(401).json("Precio no puede ser negativo")
+                            
+                            return resp.status(401).json({message: "Precio no puede ser negativo"})
                         }
                     }
-
                     if(parametorsModificados.gallery)
                     {
-                       parametorsModificados.gallery.map(el =>{
-                           let picture = picture.getPicture(el);
-                           return picture;
+                       let nuevagalleria = parametorsModificados.gallery.map(el =>{
+                           let pictures = picture.getPicture(el);
+                           return pictures;
                        })
+                       parametorsModificados.gallery = nuevagalleria;
                     }
-
                     if(parametorsModificados.id)
                     {
-                        parametorsModificados.id = req.params.id
+                        parametorsModificados.id = Number(req.params.id)
                     }
 
                     const modifiedProd = { ...product , ...parametorsModificados }
- 
                     persistence.updateDB("products.json", modifiedProd);
 
                     resp.status(200).json(modifiedProd);
@@ -144,7 +142,7 @@ const controller = {
                 {
                     resp.status(404).json({message: "Producto no encontrado"});
                 }
-                    //consultar respuesta 400
+                   
 
             }catch(error){
                 resp.status(500).json( {message : "Error interno del servidor"});
