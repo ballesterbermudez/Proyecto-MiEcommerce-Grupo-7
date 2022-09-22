@@ -1,13 +1,15 @@
-const listUsers = require("../data/users.json");
+
 const generateJWT = require("../../helpers/generateToken");
+const persistance = require('../persistence/persistence')
 
 const login = async (req, res) => {
 
   const { username, password } = req.body;
+  const data = persistance.readDB("users.json");
 
   try {
 
-    const user = listUsers.find(
+    const user = data.find(
       (user) => user.username == username && user.password == password
     );
 

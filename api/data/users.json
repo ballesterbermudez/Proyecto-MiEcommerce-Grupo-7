@@ -1,1 +1,46 @@
-[{"id":0,"email":"god@gmail.com","username":"god","password":"kratos","firstname":"god","lastname":"kratos","profilepic":"Url.ProfilePic","role":"GOD","cart":[]},{"id":1,"email":"guest@gmail.com","username":"guest","password":"guest1234","firstname":"juan","lastname":"ventura","profilepic":"Url.ProfilePic","role":"GUEST","cart":[]},{"id":5,"email":"fede@gmail.com","username":"fede","password":"fede1234","firstname":"fede","lastname":"sierra","profilepic":"url.myprofilepic","role":"GOD","cart":[]},{"id":2,"email":"fede@gmail.com","username":"fede","password":"fede1234","firstname":"fede","lastname":"sierra","profilepic":"url.myprofilepic","role":"GOD","cart":[]}]
+[
+  {
+    "id": 0,
+    "email": "god@gmail.com",
+    "username": "god",
+    "password": "kratos",
+    "firstname": "god",
+    "lastname": "kratos",
+    "profilepic": "Url.ProfilePic",
+    "role": "GOD",
+    "cart": []
+  },
+  {
+    "id": 1,
+    "email": "guest@gmail.com",
+    "username": "guest",
+    "password": "guest1234",
+    "firstname": "juan",
+    "lastname": "ventura",
+    "profilepic": "Url.ProfilePic",
+    "role": "GUEST",
+    "cart": []
+  },
+  {
+    "id": 5,
+    "email": "fede@gmail.com",
+    "username": "fede",
+    "password": "fede1234",
+    "firstname": "fede",
+    "lastname": "sierra",
+    "profilepic": "url.myprofilepic",
+    "role": "GOD",
+    "cart": []
+  },
+  {
+    "id": 2,
+    "email": "fede@gmail.com",
+    "username": "fede",
+    "password": "fede1234",
+    "firstname": "fede",
+    "lastname": "sierra",
+    "profilepic": "url.myprofilepic",
+    "role": "GOD",
+    "cart": []
+  }
+]
